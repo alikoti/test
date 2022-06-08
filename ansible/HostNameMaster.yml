@@ -1,10 +1,12 @@
 ---
 - name: 'Playbook for change the hostname'
-  hosts: rsyslog
+
+  vars:
+    - new_hostname: rsys
+    - host: srv.local
+  hosts: "{{ host  }}"
   become: True
-  become_method: sudo
-  vars: 
-    - new_hostname: rsys 
+  become_method: sudo 
   tasks:
     - name: "Update Hostnames"
       hostname:
