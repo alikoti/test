@@ -1,0 +1,9 @@
+---
+ - hosts: linux
+   vars:
+    S: Hello everybodylotion!!
+   tasks:
+      debug:
+      msg: "{{ S }}"
+...
+

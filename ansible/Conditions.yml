@@ -1,0 +1,11 @@
+---
+ - name: Using Conditions
+   hosts: webservers
+   tasks:
+      - service: name=httpd state=stopped
+        when: ansible_host=='10.10.0.15'
+      - service: name=httpd state=stopped
+        when: ansible_host=='10.10.0.12'
+...
+
+

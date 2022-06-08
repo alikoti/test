@@ -1,0 +1,27 @@
+---
+- hosts: vm1
+  become: True
+  become_method: sudo
+  tasks: 
+    - name: Upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+    - name: install rsyslog
+      yum:
+        name: rsyslog
+        state: present
+    - name: enable  rsyslog
+      ansible.builtin.service:
+        name: rsyslog
+        state: started 
+        enabled: yes
+    - name: install firewalld
+      action: yum name=firewalld state=installed
+    - name: Enable firewalld on system reboot
+      service: name=firewalld enabled=yes
+    - name: Start service firewalld, if not started
+      service:
+        name: firewalld
+        state: started
+...

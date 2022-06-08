@@ -1,0 +1,10 @@
+---
+- hosts: DNS
+  become: True
+  become_method: sudo
+  vars:
+    - new_hostname: 'dns.local.home'
+  tasks:
+    - name: Set a hostname
+      ansible.builtin.hostname:
+         name: "{{ new_hostname }}"

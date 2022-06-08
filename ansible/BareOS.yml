@@ -1,0 +1,13 @@
+---
+- hosts: vm3
+  become: True
+  become_method: sudo
+  tasks:
+  - name: Install Wget
+    yum:
+      name: wget
+      state: latest
+     
+  - name: Run a script to install BareOS Server
+    ansible.builtin.script: /etc/ansible/scrpt.sh
+...

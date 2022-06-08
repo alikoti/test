@@ -1,0 +1,40 @@
+---
+- hosts: DNS
+  become: True
+  become_method: sudo
+  tasks: 
+#    - name: Upgrade all packages
+#      yum:
+#        name: '*'
+#        state: latest
+    - name: install rsyslog
+      yum:
+        name: rsyslog
+        state: present
+    - name: enable  rsyslog
+      ansible.builtin.service:
+        name: rsyslog
+        state: started 
+        enabled: yes
+
+    - name: Add UDP port 
+      ansible.builtin.lineinfile:
+        path: /etc/rsyslog.conf
+        regexp: '^%UDP'
+        insertafter: '^#UDP'
+        line: action(type="omfwd" Target="10.10.0.7" Port="514" Protocol="udp")
+
+
+    - name: Add TCP port 
+      ansible.builtin.lineinfile:
+        path: /etc/rsyslog.conf
+        regexp: '^%TCP'
+        insertafter: '^#TCP'
+        line: action(type="omfwd" Target="10.10.0.7" Port="514" Protocol="tcp")
+
+    - name: restart  rsyslog
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
+
+...

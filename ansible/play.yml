@@ -1,0 +1,11 @@
+---
+- hosts: webservers
+  vars:
+    my_service: apache2
+    desired_state: started
+
+  tasks:
+- name: Apache started
+    service:
+      name:  "{{ my_service }}"
+      state: "{{ desired_state }}"

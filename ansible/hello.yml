@@ -1,0 +1,11 @@
+---
+ - name: ping Test playbook
+   hosts: linux
+   vars:
+      S: HELLO!
+   tasks:
+    - name: VSANSibe
+      debug:
+        msg: "{{ S }}"
+
+...

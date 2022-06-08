@@ -1,0 +1,12 @@
+---
+- hosts: web
+  become: True
+  become_method: sudo
+  tasks: 
+
+    - name: restart  rsyslog
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
+
+...

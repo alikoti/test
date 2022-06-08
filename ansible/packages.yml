@@ -1,0 +1,12 @@
+---
+ - name: installing packages playbook
+   hosts: websevers
+   tasks:
+        - name: installing packages
+          yum: 
+             name: 
+                 - nginx
+                 - httpd
+                 - postgresql
+             state: present
+...

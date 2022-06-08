@@ -1,0 +1,15 @@
+---
+ - name: ping Test playbook
+   hosts: linux
+   vars:
+      S:
+       Ali: 'iq'
+       kuti: 'kutid'
+       someone: 'someoned'
+       this: 'thisd'
+
+   tasks:
+    - name: VSANSibe
+      debug:
+        msg: "{{ S }}"
+...

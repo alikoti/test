@@ -1,0 +1,25 @@
+---
+- name: Create Users & Groups
+  hosts: linux
+  become: yes
+  become_user: root
+  gather_facts: true
+  tasks:
+    - name: Create group
+      group:
+        name: "ansible"
+        state: present
+
+    - name: Create Users Task
+      user:
+        name: "ansible"
+        state: present
+        password: "ali1241994 | password_hash('sha512','A512')"
+        shell: /bin/bash
+        group: "ansible"
+      loop:
+        - ansible
+ 
+
+
+

@@ -1,0 +1,12 @@
+---
+ - name: Enable or Disable Selinux
+   hosts: linux
+   vars:
+    status: enforcing
+   tasks:
+      - name: Change Selinux in Conf.
+        lineinfile: 
+         path: /etc/selinux/config     
+         regexp: '^SELINUX'
+         line: 'SELINUX={{ status }}'
+...

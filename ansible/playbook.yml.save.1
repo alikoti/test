@@ -1,0 +1,30 @@
+---
+- hosts: vm1
+  become: True
+  become_method: sudo
+  vars: 
+    - new_hostname: NameFromAnsible 
+  tasks:
+    - name: Set a hostname 
+      ansible.builtin.hostname:
+         name: "{{ new_hostname }}"
+- hosts: vm2
+  tasks:
+  - name:install NTP on VM2
+    yum:
+     name: chrony
+     state: latest
+  - name: deploy chrony.conf template
+     template:
+      src: /chrony.conf
+      dest: /etc/chrony.conf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: Restart chronyd
+    service:
+      name: chronyd
+      state: restarted
+...

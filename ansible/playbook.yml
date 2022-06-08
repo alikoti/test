@@ -1,0 +1,66 @@
+---
+- hosts: vm1
+  become: True
+  become_method: sudo
+  vars: 
+    - new_hostname: NameFromAnsible 
+  tasks:
+    - name: Set a hostname 
+      ansible.builtin.hostname:
+         name: "{{ new_hostname }}"
+- hosts: vm2
+  become: True
+  become_method: sudo
+  tasks:
+  - name: install NTP on VM2
+    yum: 
+     name: chrony
+     state: latest
+  - name: deploy chrony.conf template
+    template:
+     src: /etc/ansible/chrony.conf
+     dest: /etc/chrony.conf
+     owner: root
+     group: root
+     mode: 0644
+     backup: yes
+
+  - name: Restart chronyd
+    service:
+      name: chronyd
+      state: restarted
+
+
+- hosts: vm3
+  become: True
+  become_method: sudo
+  tasks:
+  - name: Update all installed packages using YUM module
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+      update_only: yes
+    register: yum_update_status
+
+  - name: Remove packates not needed anymore
+    yum:
+      autoremove: yes
+
+  - name: Reboot when packages were updated
+    reboot:
+    when: yum_update_status.changed
+
+
+- hosts: vm3
+  become: True
+  become_method: sudo
+  tasks:
+  - name: Install Wget
+    yum:
+      name: wget
+      state: latest
+
+  - name: Install BareOS Server
+    ansible.builtin.script: /etc/ansible/scrpt.sh
+

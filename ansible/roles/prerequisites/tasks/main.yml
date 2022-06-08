@@ -1,0 +1,7 @@
+---
+# tasks file for prerequisites
+- name: install git
+  yum:
+     name: get 
+     state: present
+     update_cache: yes

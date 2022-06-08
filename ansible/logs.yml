@@ -1,0 +1,10 @@
+---
+ - name: Create Log Playbook
+   hosts: linux
+   tasks:
+        - name: Pull Logs
+          script: scrpt.sh
+...
+
+
+
