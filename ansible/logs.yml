@@ -1,10 +1,7 @@
 ---
  - name: Create Log Playbook
-   hosts: linux
+   hosts: rsyslog
    tasks:
-        - name: Pull Logs
-          script: scrpt.sh
-...
-
-
-
+     - name: Print all available facts
+       ansible.builtin.debug:
+         var: ansible_facts
