@@ -1,12 +1,12 @@
 ---
-- hosts: DNS
+- hosts: dns
   become: True
   become_method: sudo
   tasks: 
-#    - name: Upgrade all packages
-#      yum:
-#        name: '*'
-#        state: latest
+    - name: Upgrade all packages
+      yum:
+        name: '*'
+        state: latest
     - name: install rsyslog
       yum:
         name: rsyslog

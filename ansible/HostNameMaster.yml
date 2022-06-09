@@ -2,18 +2,30 @@
 - name: 'Playbook for change the hostname'
 
   vars:
-    - new_hostname: rsys
-    - host: srv.local
+    - new_hostname: 
+    - host: haproxy
+    - ipaddr:  
+
   hosts: "{{ host  }}"
   become: True
   become_method: sudo 
   tasks:
-    - name: "Update Hostnames"
-      hostname:
-        name: "{{ new_hostname }}"
-    - name: 'Add hostname to /etc/hosts'
+    - name: Set a hostname
+      ansible.builtin.hostname:
+         name: "{{ new_hostname }}"
+
+    - name: 'Add hostname to localhosts'
       lineinfile:
         path: /etc/hosts
         regexp: '^127\.0\.0\.1[ \t]+localhost'
         line: '127.0.0.1 localhost {{ new_hostname }}'
         state: present
+
+    - name: 'Add hostname to /etc/hosts'
+      lineinfile:
+        path: /etc/hosts
+        line: '{{ ipaddr }}  {{ new_hostname }}'
+        state: present
+
+        state: present
+
