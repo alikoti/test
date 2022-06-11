@@ -1,0 +1,71 @@
+- hosts: servers
+  become: yes
+  tasks:
+    # CentOS.
+    - name: .rpm upgrade server
+      yum:
+        update_cache: yes
+        name: '*'
+        state: latest
+        update_cache: yes
+        update_only: yes
+      register: yum_update_status
+      when: ansible_distribution == 'CentOS'
+     
+    - name: Remove packates
+      yum:
+        autoremove: yes
+    - name: Reboot when packages were updated
+      reboot:
+      when: yum_update_status.changed
+    #  Ubuntu.
+    - name: .deb do dist-upgrade
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+        only_upgrade: yes
+      register: apt_update_status
+      when: ansible_distribution == 'Debian'
+    - name: Remove packates
+      apt:
+        autoremove: yes
+      when: ansible_distribution == 'Debian'
+    - name: Reboot when packages were updated
+      reboot:
+      when: apt_update_status.changed- hosts: servers
+  become: yes
+  tasks:
+    # CentOS.
+    - name: .rpm upgrade server
+      yum:
+        update_cache: yes
+        name: '*'
+        state: latest
+        update_cache: yes
+        update_only: yes
+      register: yum_update_status
+      when: ansible_distribution == 'CentOS'
+     
+    - name: Remove packates
+      yum:
+        autoremove: yes
+    - name: Reboot when packages were updated
+      reboot:
+      when: yum_update_status.changed
+    #  Ubuntu.
+    - name: .deb do dist-upgrade
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+        only_upgrade: yes
+      register: apt_update_status
+      when: ansible_distribution == 'Debian'
+    - name: Remove packates
+      apt:
+        autoremove: yes
+      when: ansible_distribution == 'Debian'
+    - name: Reboot when packages were updated
+      reboot:
+      when: apt_update_status.changed

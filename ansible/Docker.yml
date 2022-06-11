@@ -1,6 +1,6 @@
 ---
 - name: install Docker
-  hosts: docker
+  hosts: kvm
   become: true
   tasks:
     - name: set mydistribution

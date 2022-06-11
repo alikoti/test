@@ -1,0 +1,45 @@
+---
+- name: Install nginx
+  hosts: kvm
+  become: true
+  tasks: 
+   - name: Block specific IP
+     ansible.builtin.iptables:
+       chain: INPUT
+       source: 192.168.0.114
+       jump: ACCEPT
+     become: yes
+   
+   - name: Forward port 8080 to 80
+     ansible.builtin.iptables:
+       table: nat
+       chain: PREROUTING
+       in_interface: ens36
+       protocol: tcp
+       match: tcp
+       destination_port: '8080'
+       jump: REDIRECT
+       to_ports: '80'
+       comment: Redirect web traffic to port 80
+     become: yes
+   
+   - name: Allow related and established connections
+     ansible.builtin.iptables:
+       chain: INPUT
+       ctstate: ESTABLISHED,RELATED
+       jump: ACCEPT
+
+   - name: Create custom iptables chain
+     become: yes
+     command: iptables -N LOGGING
+   
+   - name: Log packets arriving into an user-defined chain
+     ansible.builtin.iptables:
+       chain: LOGGING
+       action: append
+       state: present
+       limit: 2/second
+       limit_burst: '20'
+       log_prefix: "IPTABLES:INFO: "
+       log_level: info
+   
